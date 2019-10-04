@@ -7,6 +7,13 @@ A very simple REST API to Denon receivers.
 ### REST API
 The API of the server is defined by the [`api/server.yml`](api/server.yml) Swagger specification. 
 
+#### Examples
+* `/status`: to the get connection status
+* `/command/PWON`: to turn the receiver on
+* `/command/ZM%3F`: check the status of main zone
+
+For a list of commands check the Denon AVR Control Protocol (Google!).
+
 ### Configuration
 The [`configs/config-template.yml`](configs/config-template.yml) offers a template for the service configuration. 
 
