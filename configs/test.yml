@@ -1,0 +1,6 @@
+---
+# receiver configuration
+receiver:
+  host: denon.local
+
+

@@ -1,0 +1,66 @@
+swagger: "2.0"
+info:
+  title: Denon-API
+  version: 0.1.0
+consumes:
+- application/json
+produces:
+- application/json
+schemes:
+- http
+paths:
+  /status:
+    get:
+      description: Checks the configuration and the connection to the receiver
+      operationId: getStatus
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: '#/definitions/StatusResponse'
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"          
+  /command/{command}:
+    parameters:
+      - name: command
+        type: string
+        in: path
+        required: true
+    post:
+      description: Sends a command to the Receiver
+      operationId: postCommand
+      responses:
+        202:
+          description: Accepted
+          schema:
+            $ref: '#/definitions/CommandResponse'
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+definitions:
+  StatusResponse:
+    type: object
+    required:
+      - host
+      - reachable
+    properties:
+      host:
+        type: string
+        description: host name or IP address of the receiver
+      reachable:
+        type: boolean
+        description: if the receiver is reachable
+  CommandResponse:
+    type: object
+    properties:
+      raw:
+        type: string
+        description: the raw response from the receiver
+    required:
+      - raw
+  ErrorResponse:
+    type: string
+    

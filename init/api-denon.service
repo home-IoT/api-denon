@@ -1,0 +1,15 @@
+[Unit]
+Description=Denon REST API
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/services/api-denon
+ExecStart=/services/api-denon/api-denon --port 8035 --config config.yml
+Restart=on-failure
+RestartSec=10
+startLimitIntervalSec=60
+
+[Install]
+WantedBy=multi-user.target
