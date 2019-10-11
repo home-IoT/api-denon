@@ -3,7 +3,10 @@ package denon
 import (
 	"errors"
 	"net"
+	"time"
 )
+
+const timeout = time.Duration(1 * time.Second)
 
 // CheckConnection checks if a connection to the receiver is possible
 func CheckConnection() bool {
@@ -31,10 +34,13 @@ func SendCommand(command string) (*string, error) {
 		return nil, errors.New("could not send the command")
 	}
 
+	connection.SetReadDeadline(time.Now().Add(timeout))
 	response := make([]byte, 1024)
 	readLength, err := connection.Read(response)
 	if err != nil {
-		return nil, errors.New("could not read from the connection")
+		if netError, ok := err.(net.Error); ok && !netError.Timeout() {
+			return nil, errors.New("could not read from the connection")
+		}
 	}
 
 	responseStr := ""
