@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	models "github.com/home-IoT/api-denon/gen/models"
+	"github.com/home-IoT/api-denon/gen/models"
 )
 
 // GetStatusOKCode is the HTTP code returned for type GetStatusOK

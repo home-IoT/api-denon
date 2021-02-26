@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/go-openapi/swag"
+
 	"github.com/home-IoT/api-denon/gen/restapi/operations"
 )
 

@@ -6,9 +6,10 @@ import (
 	"log"
 	"os"
 
-	loads "github.com/go-openapi/loads"
 	"github.com/home-IoT/api-denon/gen/restapi"
 	"github.com/home-IoT/api-denon/gen/restapi/operations"
+
+	"github.com/go-openapi/loads"
 	flags "github.com/jessevdk/go-flags"
 )
 
@@ -29,7 +30,6 @@ func main() {
 	parser := flags.NewParser(server, flags.Default)
 	parser.ShortDescription = "Denon-API"
 	parser.LongDescription = swaggerSpec.Spec().Info.Description
-
 	server.ConfigureFlags()
 	for _, optsGroup := range api.CommandLineOptionsGroups {
 		_, err := parser.AddGroup(optsGroup.ShortDescription, optsGroup.LongDescription, optsGroup.Options)

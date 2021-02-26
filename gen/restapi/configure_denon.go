@@ -6,11 +6,9 @@ import (
 	"crypto/tls"
 	"net/http"
 
-	"github.com/home-IoT/api-denon/internal/denon"
-
-	errors "github.com/go-openapi/errors"
-	runtime "github.com/go-openapi/runtime"
-	middleware "github.com/go-openapi/runtime/middleware"
+	"github.com/go-openapi/errors"
+	"github.com/go-openapi/runtime"
+	"github.com/go-openapi/runtime/middleware"
 
 	"github.com/home-IoT/api-denon/gen/restapi/operations"
 )
@@ -18,7 +16,7 @@ import (
 //go:generate swagger generate server --target ../../gen --name Denon --spec ../../api/server.yml
 
 func configureFlags(api *operations.DenonAPI) {
-	api.CommandLineOptionsGroups = denon.CommandLineOptionsGroups
+	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
 }
 
 func configureAPI(api *operations.DenonAPI) http.Handler {
@@ -31,25 +29,22 @@ func configureAPI(api *operations.DenonAPI) http.Handler {
 	// Example:
 	// api.Logger = log.Printf
 
-	denon.Configure(api)
-
 	api.JSONConsumer = runtime.JSONConsumer()
 
 	api.JSONProducer = runtime.JSONProducer()
 
-	api.GetStatusHandler = operations.GetStatusHandlerFunc(denon.GetStatus)
-	api.PostCommandHandler = operations.PostCommandHandlerFunc(denon.PostCommand)
-
 	if api.GetStatusHandler == nil {
 		api.GetStatusHandler = operations.GetStatusHandlerFunc(func(params operations.GetStatusParams) middleware.Responder {
-			return middleware.NotImplemented("operation .GetStatus has not yet been implemented")
+			return middleware.NotImplemented("operation operations.GetStatus has not yet been implemented")
 		})
 	}
 	if api.PostCommandHandler == nil {
 		api.PostCommandHandler = operations.PostCommandHandlerFunc(func(params operations.PostCommandParams) middleware.Responder {
-			return middleware.NotImplemented("operation .PostCommand has not yet been implemented")
+			return middleware.NotImplemented("operation operations.PostCommand has not yet been implemented")
 		})
 	}
+
+	api.PreServerShutdown = func() {}
 
 	api.ServerShutdown = func() {}
 

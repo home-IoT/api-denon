@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	log "github.com/Sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 // InitLog initialize the log supporting debug and non-debug mode

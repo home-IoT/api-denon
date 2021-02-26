@@ -16,8 +16,6 @@ PACKAGE_PATH=github.com/home-IoT/$(PROJECT)/internal/$(PACKAGE_NAME)
 # --- Repo 
 
 initialize: clean swagger-gen
-	dep init
-	$(MAKE) go-dep
 
 clean:
 	mkdir -p bin
@@ -46,17 +44,6 @@ swagger-gen:
 	swagger generate server -f $(SERVER_SWAGGER_FILE) -t gen -A denon
 
 # --- Common Go
-
-go-dep:
-	dep ensure
-
-go-dep-status:
-	dep status
-
-go-dep-clean: clean
-	mkdir -p ./bin
-	rm -rf ./vendor/*
-	dep ensure
 
 go-fmt:
 	@go fmt $(PKGS)
@@ -88,7 +75,7 @@ go-build-mac:
 TARGET ?= $(PROJECT)
 
 go-build: 
-	go build -ldflags="-X $(PACKAGE_PATH).GitRevision=$(shell git rev-parse HEAD) -X $(PACKAGE_PATH).BuildVersion=$(VERSION) -X $(JUPITER_PACKAGE).BuildTime=$(DATE)" -i -o ./bin/$(TARGET) gen/cmd/denon-server/main.go
+	go build -ldflags="-X $(PACKAGE_PATH).GitRevision=$(shell git rev-parse HEAD) -X $(PACKAGE_PATH).BuildVersion=$(VERSION) -X $(JUPITER_PACKAGE).BuildTime=$(DATE)" -o ./bin/$(TARGET) gen/cmd/$(PACKAGE_NAME)-server/main.go
 
 go-build-all: go-build-pi go-build-linux go-build-windows go-build-mac
 

@@ -20,13 +20,13 @@ The [`configs/config-template.yml`](configs/config-template.yml) offers a templa
 ### Build 
 
 Make sure you that
-* you have `dep` installed. Visit https://github.com/golang/dep 
+* you have Go version 1.11 or higher
 * your `GOPATH` and `GOROOT` environments are set properly.
 
 #### Makefile
 There is a [`Makefile`](Makefile) provided that offers a number of targets for preparing, building and running the service. To build and run the service against the [`configs/test.yml`](configs/test.yml) configuration, simply call the `run` target:
 ```
-make clean dep run
+make clean run
 ```
 
 #### Systemd
