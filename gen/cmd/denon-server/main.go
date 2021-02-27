@@ -6,10 +6,9 @@ import (
 	"log"
 	"os"
 
+	"github.com/go-openapi/loads"
 	"github.com/home-IoT/api-denon/gen/restapi"
 	"github.com/home-IoT/api-denon/gen/restapi/operations"
-
-	"github.com/go-openapi/loads"
 	flags "github.com/jessevdk/go-flags"
 )
 

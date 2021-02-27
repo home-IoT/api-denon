@@ -11,12 +11,13 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 
 	"github.com/home-IoT/api-denon/gen/restapi/operations"
+	"github.com/home-IoT/api-denon/internal/denon"
 )
 
 //go:generate swagger generate server --target ../../gen --name Denon --spec ../../api/server.yml
 
 func configureFlags(api *operations.DenonAPI) {
-	// api.CommandLineOptionsGroups = []swag.CommandLineOptionsGroup{ ... }
+	api.CommandLineOptionsGroups = denon.CommandLineOptionsGroups
 }
 
 func configureAPI(api *operations.DenonAPI) http.Handler {
@@ -29,9 +30,14 @@ func configureAPI(api *operations.DenonAPI) http.Handler {
 	// Example:
 	// api.Logger = log.Printf
 
+	denon.Configure(api)
+
 	api.JSONConsumer = runtime.JSONConsumer()
 
 	api.JSONProducer = runtime.JSONProducer()
+
+	api.GetStatusHandler = operations.GetStatusHandlerFunc(denon.GetStatus)
+	api.PostCommandHandler = operations.PostCommandHandlerFunc(denon.PostCommand)
 
 	if api.GetStatusHandler == nil {
 		api.GetStatusHandler = operations.GetStatusHandlerFunc(func(params operations.GetStatusParams) middleware.Responder {

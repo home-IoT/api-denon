@@ -75,7 +75,7 @@ go-build-mac:
 TARGET ?= $(PROJECT)
 
 go-build: 
-	go build -ldflags="-X $(PACKAGE_PATH).GitRevision=$(shell git rev-parse HEAD) -X $(PACKAGE_PATH).BuildVersion=$(VERSION) -X $(JUPITER_PACKAGE).BuildTime=$(DATE)" -o ./bin/$(TARGET) gen/cmd/$(PACKAGE_NAME)-server/main.go
+	go build -ldflags="-X $(PACKAGE_PATH).GitRevision=$(shell git rev-parse HEAD) -X $(PACKAGE_PATH).BuildVersion=$(VERSION) -X $(PACKAGE_PATH).BuildTime=$(DATE)" -o ./bin/$(TARGET) gen/cmd/$(PACKAGE_NAME)-server/main.go
 
 go-build-all: go-build-pi go-build-linux go-build-windows go-build-mac
 
