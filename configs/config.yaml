@@ -2,3 +2,8 @@
 # receiver configuration
 receiver:
   host: 192.168.1.43
+
+server:
+  host: 0.0.0.0
+  port: 8080
+
