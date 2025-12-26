@@ -9,12 +9,23 @@ import (
 	"gopkg.in/yaml.v2"
 )
 
+const (
+	DefaultServerHost = "127.0.0.1"
+	DefaultServerPort = 8031
+)
+
 type receiverConfig struct {
 	Host string `yaml:"host"`
 }
 
+type serverConfig struct {
+	Host string `yaml:"host"`
+	Port int    `yaml:"port"`
+}
+
 type denonConfigYAML struct {
 	Receiver receiverConfig `yaml:"receiver"`
+	Server   serverConfig   `yaml:"server"`
 }
 
 var configuration *denonConfigYAML
@@ -52,4 +63,20 @@ func loadConfig(configFile string) {
 	}
 
 	configuration = config
+}
+
+// GetServerHost returns the configured server host, or DefaultServerHost if not set
+func GetServerHost() string {
+	if configuration != nil && configuration.Server.Host != "" {
+		return configuration.Server.Host
+	}
+	return DefaultServerHost
+}
+
+// GetServerPort returns the configured server port, or DefaultServerPort if not set
+func GetServerPort() int {
+	if configuration != nil && configuration.Server.Port != 0 {
+		return configuration.Server.Port
+	}
+	return DefaultServerPort
 }

@@ -13,6 +13,17 @@ PKGS := $(shell go list ./... | grep -vF /vendor/)
 PACKAGE_NAME=denon
 PACKAGE_PATH=github.com/home-IoT/$(PROJECT)/internal/$(PACKAGE_NAME)
 
+# --- Docker
+IMAGE_NAME=$(PROJECT)
+DOCKER_REGISTRY=theroozbeh
+TAG=$(VERSION)
+
+OS=$(shell uname)
+CMD_XARGS=xargs
+ifeq "$(OS)" "Linux"
+	CMD_XARGS=xargs -r
+endif
+
 # --- Repo 
 
 initialize: clean swagger-gen
@@ -80,11 +91,11 @@ go-build:
 go-build-all: go-build-pi go-build-linux go-build-windows go-build-mac
 
 run: go-build
-	./bin/$(TARGET) --port 8080 -c configs/test.yml
+	./bin/$(TARGET) -c configs/test.yml
 
 # --- Release
 
-go-release-all: clean 
+go-release-all: clean
 	$(MAKE) go-build-all
 	mkdir -p ./release
 	rm -rf ./release/*
@@ -92,4 +103,22 @@ go-release-all: clean
 	cp ./bin/* ./release
 	for bf in ./release/*; do shasum -a 256 "$$bf" > "$$bf".sha256; done
 
+# --- Docker
+
+.PHONY: docker-clean docker-build docker-run docker-push
+
+docker-clean:
+	docker ps -a -q --filter name=$(IMAGE_NAME) | $(CMD_XARGS) docker stop | $(CMD_XARGS) docker rm
+
+docker-build: docker-clean
+	docker build --pull --force-rm --tag $(IMAGE_NAME)\:$(TAG) .
+
+docker-run: docker-clean
+	docker run --name $(IMAGE_NAME) $(IMAGE_NAME)\:$(TAG)
+
+docker-push: docker-build
+	docker tag $(IMAGE_NAME)\:$(TAG) $(DOCKER_REGISTRY)/$(IMAGE_NAME)\:$(TAG)
+	docker tag $(IMAGE_NAME)\:$(TAG) $(DOCKER_REGISTRY)/$(IMAGE_NAME)\:latest
+	docker push $(DOCKER_REGISTRY)/$(IMAGE_NAME)\:$(TAG)
+	docker push $(DOCKER_REGISTRY)/$(IMAGE_NAME)\:latest
 

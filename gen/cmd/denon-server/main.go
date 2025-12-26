@@ -9,6 +9,7 @@ import (
 	"github.com/go-openapi/loads"
 	"github.com/home-IoT/api-denon/gen/restapi"
 	"github.com/home-IoT/api-denon/gen/restapi/operations"
+	"github.com/home-IoT/api-denon/internal/denon"
 	flags "github.com/jessevdk/go-flags"
 )
 
@@ -48,6 +49,10 @@ func main() {
 	}
 
 	server.ConfigureAPI()
+
+	// Apply server host and port from config
+	server.Host = denon.GetServerHost()
+	server.Port = denon.GetServerPort()
 
 	if err := server.Serve(); err != nil {
 		log.Fatalln(err)

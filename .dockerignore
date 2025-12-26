@@ -1,0 +1,31 @@
+# Git
+.git
+.gitignore
+
+# Build artifacts
+bin/
+release/
+pkg/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation
+*.md
+LICENSE
+
+# Scripts not needed in container
+scripts/
+init/

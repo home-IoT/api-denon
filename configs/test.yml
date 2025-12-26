@@ -1,6 +1,9 @@
 ---
+# server configuration
+server:
+  host: 127.0.0.1
+  port: 8080
+
 # receiver configuration
 receiver:
   host: denon.local
-
-
